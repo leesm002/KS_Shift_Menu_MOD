@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 public record ChannelSwitchPayload(String targetChannel) implements CustomPayload {
 
     public static final Id<ChannelSwitchPayload> ID =
-            new Id<>(new Identifier("ks_shift_menu_mod", "channel_switch"));
+            new Id<>(Identifier.of("ks_shift_menu_mod", "channel_switch"));
 
     @Override
     public Id<? extends CustomPayload> getId() {
@@ -21,5 +21,4 @@ public record ChannelSwitchPayload(String targetChannel) implements CustomPayloa
     public void write(PacketByteBuf buf) {
         buf.writeString(targetChannel);
     }
-
 }
