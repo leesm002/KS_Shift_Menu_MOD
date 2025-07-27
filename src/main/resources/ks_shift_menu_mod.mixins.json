@@ -4,6 +4,8 @@
   "package": "org.King_Shack.ks_shift_menu_mod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "MixinKeybindsScreen",
+    "MixinKeybindsScreenHandler"
   ],
   "injectors": {
     "defaultRequire": 1
