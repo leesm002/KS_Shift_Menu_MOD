@@ -30,7 +30,10 @@ public class ChannelNetworking {
                 ServerWorld targetWorld = server.getWorld(worldKey);
                 if (targetWorld != null) {
                     Vec3d pos = Vec3d.ofBottomCenter(targetWorld.getSpawnPos());
-                    player.teleport(targetWorld, pos.getX(), pos.getY(), pos.getZ(), player.getYaw(), player.getPitch());
+                    player.networkHandler.requestTeleport(
+                            pos.getX(), pos.getY(), pos.getZ(),
+                            player.getYaw(), player.getPitch()
+                    );
                 }
             });
         });
