@@ -7,8 +7,8 @@ import net.minecraft.util.Identifier;
 
 public record ChannelSwitchPayload(String targetChannel) implements CustomPayload {
 
-    public static final Id<ChannelSwitchPayload> ID =
-            new Id<>(Identifier.of("ks_shift_menu_mod", "channel_switch"));
+    public static final CustomPayload.Id<ChannelSwitchPayload> ID =
+            new CustomPayload.Id<>(Identifier.of("ks_shift_menu_mod", "channel_switch"));
 
     @Override
     public Id<? extends CustomPayload> getId() {
@@ -23,8 +23,7 @@ public record ChannelSwitchPayload(String targetChannel) implements CustomPayloa
         buf.writeString(targetChannel);
     }
 
-    // 반드시 호출되도록 보장: 서버 or 클라이언트 init에서 호출
-    public static void registerCodec(PayloadTypeRegistry registry) {
-        registry.register(ID, ChannelSwitchPayload::read);
+    public static void registerCodec() {
+        PayloadTypeRegistry.play().register(ID, ChannelSwitchPayload::read);
     }
 }

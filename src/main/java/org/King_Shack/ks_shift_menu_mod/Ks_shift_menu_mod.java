@@ -7,7 +7,7 @@ public class Ks_shift_menu_mod implements ModInitializer {
     @Override
     public void onInitialize() {
         ChannelNetworking.register();
-        ChannelSwitchPayload.registerCodec(ServerPlayNetworking.PLAY);
+        ChannelSwitchPayload.registerCodec();
     }
 
 }
