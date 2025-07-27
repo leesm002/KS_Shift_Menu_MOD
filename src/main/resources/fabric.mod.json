@@ -1,35 +1,24 @@
+
 {
   "schemaVersion": 1,
   "id": "ks_shift_menu_mod",
-  "version": "${version}",
-  "name": "KS_Shift_Menu_MOD",
-  "description": "",
-  "authors": [],
-  "contact": {},
-  "license": "All-Rights-Reserved",
-  "icon": "assets/ks_shift_menu_mod/icon.png",
+  "version": "1.0.0",
+  "name": "KS Shift Menu Mod",
+  "description": "Shift + F로 GUI 열고 채널 이동하는 모드",
+  "authors": ["King_Shack"],
+  "contact": {
+    "sources": "https://github.com/King-Shack/KS_Shift_Menu_MOD"
+  },
+  "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "fabric-datagen": [
-      "org.King_Shack.ks_shift_menu_mod.client.Ks_shift_menu_modDataGenerator"
-    ],
-    "client": [
-      "org.King_Shack.ks_shift_menu_mod.client.Ks_shift_menu_modClient"
-    ],
-    "main": [
-      "org.King_Shack.ks_shift_menu_mod.Ks_shift_menu_mod"
-    ]
+    "main": ["org.King_Shack.ks_shift_menu_mod.Ks_shift_menu_mod"],
+    "client": ["org.King_Shack.ks_shift_menu_mod.client.Ks_shift_menu_modClient"]
   },
-  "mixins": [
-    "ks_shift_menu_mod.mixins.json",
-    {
-      "config": "ks_shift_menu_mod.client.mixins.json",
-      "environment": "client"
-    }
-  ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": ">=0.15.6",
     "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "1.21.8",
+    "java": ">=17"
   }
 }
