@@ -1,52 +1,34 @@
 package org.King_Shack.ks_shift_menu_mod;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import org.King_Shack.ks_shift_menu_mod.network.ChannelSwitchPayload;
-import net.minecraft.network.packet.s2c.play.PositionFlag;
-import java.util.Set;
-import java.util.EnumSet;
+import org.King_Shack.ks_shift_menu_mod.network.ChannelSwitchC2SPayload;
 
 public class ChannelNetworking {
+
+    /** 네트워크 초기화: 반드시 onInitialize에서 호출 */
     public static void register() {
-        ServerPlayNetworking.registerGlobalReceiver(ChannelSwitchPayload.ID, (payload, context) -> {
-            ServerPlayerEntity player = context.player();
-            MinecraftServer server = player.getServer();
-            String target = payload.targetChannel();
+        // 1) 페이로드 타입/코덱을 먼저 등록
+        ChannelSwitchC2SPayload.registerType();
 
-            server.execute(() -> {
-                RegistryKey<World> worldKey = switch (target) {
-                    case "spawn" -> World.OVERWORLD;
-                    case "village" -> RegistryKey.of(RegistryKeys.WORLD, Identifier.of("ks_shift_menu_mod", "village"));
-                    case "wild" -> RegistryKey.of(RegistryKeys.WORLD, Identifier.of("ks_shift_menu_mod", "wild"));
-                    default -> null;
-                };
+        // 2) 서버 글로벌 수신기 등록 (클라 → 서버)
+        ServerPlayNetworking.registerGlobalReceiver(
+                ChannelSwitchC2SPayload.ID,
+                (payload, context) -> {
+                    // 서버 스레드에서 안전하게 처리
+                    context.server().execute(() -> {
+                        ServerPlayerEntity player = context.player();
+                        String target = payload.target();
 
-                if (worldKey == null) return;
+                        // TODO: 여기에 "서버 이동 메뉴" 로직 구현
+                        //  - 예시: 플레이어에게 피드백 메세지
+                        player.sendMessage(() -> net.minecraft.text.Text.literal(
+                                "[KS Shift Menu] 요청된 타겟: " + target
+                        ), false);
 
-                ServerWorld targetWorld = server.getWorld(worldKey);
-                if (targetWorld != null) {
-                    Vec3d pos = Vec3d.ofBottomCenter(targetWorld.getSpawnPos());
-                    player.teleport(
-                            targetWorld,
-                            pos.x, pos.y, pos.z,
-                            EnumSet.of(PositionFlag.X, PositionFlag.Y, PositionFlag.Z),
-                            player.getYaw(),
-                            player.getPitch(),
-                            false
-                    );
+                        //  - 예시: 나중에 채널/서버 스위칭 로직, GUI 오픈용 패킷 전송 등 연결
+                    });
                 }
-            });
-        });
-
+        );
     }
-
 }
